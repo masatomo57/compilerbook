@@ -24,4 +24,7 @@ assert 14 "13+1"
 
 assert 41 " 12 + 34 - 5"
 
+assert 12 "ccc"
+assert 13 "13++"
+
 echo OK
