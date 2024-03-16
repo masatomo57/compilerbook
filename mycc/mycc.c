@@ -46,6 +46,15 @@ Token *token;
 char *user_input;
 
 // エラーを報告するための関数
+void error(char *fmt, ...) {
+	va_list ap;
+	va_start(ap, fmt);
+	vfprintf(stderr, fmt, ap);
+	fprintf(stderr, "\n");
+	exit(1);
+}
+
+// エラーを報告するための関数
 // printfと同じ引数を取る
 void error_at(char *loc, char *fmt, ...) {
 	va_list ap;
@@ -98,7 +107,7 @@ bool at_eof() {
 // 新しいトークンを作成してcurにつなげる
 Token *new_token(TokenKind kind, Token *cur, char *str) {
 	Token *tok = calloc(1, sizeof(Token));
-	tok->kind = kind;
+	tok->kind = kind;// エラーを報告するための関数
 	tok->str = str;
 	cur->next = tok;
 	return tok;
@@ -117,7 +126,7 @@ Token *tokenize(char *p) {
 			continue;
 		}
 		
-		if (*p == '+' || *p == '-') {
+		if (strchr("+-*/()", *p)) {
 			cur = new_token(TK_RESERVED, cur, p++);
 			continue;
 		}
@@ -238,7 +247,7 @@ int main(int argc, char **argv) {
 	Node *node = expr();
 	
 	// アセンブリの前半部分を出力
-	printf(".intel_syntax noprefix\n");すて
+	printf(".intel_syntax noprefix\n");
 	printf(".global main\n");
 	printf("main:\n");
 	
